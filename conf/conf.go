@@ -24,7 +24,7 @@ type Config struct {
 var conf Config
 func Init() error {
 	conf = Config{
-		Name: "app.conf",
+		Name: "app.yaml",
 	}
 	err := conf.initConfig()
 	if err != nil {
@@ -43,12 +43,13 @@ func (c *Config)initConfig() error {
 		viper.SetConfigFile(c.Name)
 	} else {
 		viper.AddConfigPath("conf")
-		viper.SetConfigName("app.conf")
+		viper.SetConfigName("app.yaml")
 	}
-	viper.SetConfigType("conf")
+	viper.SetConfigType("yaml")
 	viper.AutomaticEnv()
 	viper.SetEnvPrefix("")
 	if err := viper.ReadInConfig(); err != nil {
+		log.Println("ReadInConfig err:", err)
 		return err
 	}
 	log.Println("读取配置文件成功")
